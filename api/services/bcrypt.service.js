@@ -1,22 +1,10 @@
-import jwt from 'jsonwebtoken';
-import moment from 'moment';
-const secretKey = process.env.SECRET_KEY;
+import bcrypt from 'bcryptjs';
+const salt_rounds = parseInt(process.env.SALT_ROUNDS);
 
-export const encodeToken = (user) => {
-    const payload = {
-        sub: user.id,
-        username: user.username,
-        email: user.email,
-        role: user.role,
-        active: user.active
-    };
-    return jwt.sign(payload, secretKey, { expiresIn: '2w' })
+export const hashPassword = (password) => {
+  return bcrypt.hashSync(password, salt_rounds);
 }
 
-export const decodeToken = (token) => {
-    return jwt.verify(token, secretKey)
-}
-
-export const hasTokenExpired = (payload) => {
-  return payload.exp <= moment().unix();
+export const isPasswordValid = (password, hash) => {
+  return bcrypt.compare(password, hash);
 }

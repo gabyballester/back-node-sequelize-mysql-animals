@@ -1,21 +1,36 @@
-const { SERVER_HOST, SERVER_PORT } = process.env;
+const {
+  SERVER_HOST,
+  SERVER_PORT,
+  EMAIL_SERVICE,
+  EMAIL_SECURE,
+  GMAIL_USER,
+  GMAIL_PASS,
+  NAME_TO_SHOW,
+  REJECTION_FALSE,
+  SECRET_KEY,
+  SALT_ROUNDS,
+  PREFIX
+} = process.env;
 
 export const GLOBAL = {
   api: {
-    baseUrl: `http://${SERVER_HOST}:${SERVER_PORT}`,
+    serverPort: SERVER_PORT,
+    baseUrl: `${PREFIX}${SERVER_HOST}:${SERVER_PORT}`,
     endpoint: {
-      emailActivation: '/auth/activate/',
-      frontPassChangeForm: '/auth/front-pass-change-form/'
-    }
+      emailActivation: "/auth/activate/",
+      frontPassChangeForm: "/auth/front-pass-change-form/",
+    },
   },
   emailConfig: {
-    service: process.env.EMAIL_SERVICE,
-    secure: process.env.EMAIL_SECURE,
+    service: EMAIL_SERVICE,
+    secure: EMAIL_SECURE,
     auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_PASS,
+      user: GMAIL_USER,
+      pass: GMAIL_PASS,
     },
-    from: process.env.NAME_TO_SHOW,
-    rejection_false: process.env.REJECTION_FALSE
+    from: NAME_TO_SHOW,
+    rejection_false: REJECTION_FALSE,
   },
-}
+  secretKey: SECRET_KEY,
+  saltRounds: SALT_ROUNDS,
+};
