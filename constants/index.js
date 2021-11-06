@@ -1,10 +1,12 @@
 const { SERVER_HOST, SERVER_PORT } = process.env;
 
 export const GLOBAL = {
-  baseUrl: `http://${SERVER_HOST}:${SERVER_PORT}`,
-  endpoint: {
-    emailActivation: '/auth/activate/',
-    frontPassChangeForm: '/auth/front-pass-change-form/'
+  api: {
+    baseUrl: `http://${SERVER_HOST}:${SERVER_PORT}`,
+    endpoint: {
+      emailActivation: '/auth/activate/',
+      frontPassChangeForm: '/auth/front-pass-change-form/'
+    }
   },
   emailConfig: {
     service: process.env.EMAIL_SERVICE,
@@ -16,5 +18,4 @@ export const GLOBAL = {
     from: process.env.NAME_TO_SHOW,
     rejection_false: process.env.REJECTION_FALSE
   },
-
 }
