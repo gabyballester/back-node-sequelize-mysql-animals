@@ -1,5 +1,6 @@
 import { decodeToken, hasTokenExpired } from '../api/services/jwt.service';
-const secretKey = process.env.SECRET_KEY;
+import { GLOBAL } from "../constants";
+const { secretKey } = GLOBAL;
 
 export const isAuthMd = (req, res, next) => {
     let message;
@@ -10,9 +11,8 @@ export const isAuthMd = (req, res, next) => {
     if (!req.headers.authorization) {
         message = 'La petición no tiene la cabecera de autenticación';
         return res.status(401).send({ message });
-    } else {
-        //extraigo token
-        token = req.headers.authorization;
+    } else { // limpio token y quito el Bearer
+        token = req.headers.authorization.replace("Bearer ", "").replace(/['"]+/g, "");
     }
 
     try {
