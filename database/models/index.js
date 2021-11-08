@@ -5,7 +5,7 @@ import path from 'path';
 import Sequelize from "sequelize";
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const dbConfig = require('../config')[env];
+const dbConfig = require('../dbConfig')[env];
 const {dbName, userName, password} = dbConfig
 const db = {};
 

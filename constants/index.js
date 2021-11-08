@@ -1,4 +1,5 @@
 const {
+  NODE_ENV,
   SERVER_HOST,
   SERVER_PORT,
   EMAIL_SERVICE,
@@ -13,6 +14,7 @@ const {
 } = process.env;
 
 export const GLOBAL = {
+  environment: NODE_ENV,
   api: {
     serverPort: SERVER_PORT,
     baseUrl: `${HTTP_PREFIX}${SERVER_HOST}:${SERVER_PORT}`,
