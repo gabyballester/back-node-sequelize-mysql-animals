@@ -9,13 +9,13 @@ const {
   REJECTION_FALSE,
   SECRET_KEY,
   SALT_ROUNDS,
-  PREFIX
+  HTTP_PREFIX
 } = process.env;
 
 export const GLOBAL = {
   api: {
     serverPort: SERVER_PORT,
-    baseUrl: `${PREFIX}${SERVER_HOST}:${SERVER_PORT}`,
+    baseUrl: `${HTTP_PREFIX}${SERVER_HOST}:${SERVER_PORT}`,
     endpoint: {
       emailActivation: "/auth/activate/",
       frontPassChangeForm: "/auth/front-pass-change-form/",
