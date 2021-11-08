@@ -1,22 +1,23 @@
-import { User } from '../../database/models';
 import { hashPassword, isPasswordValid } from "../services/bcrypt.service";
 import { generateHash } from "../services/hash.service";
 import { encodeToken } from '../services/jwt.service';
 import { sendActivationEmail, sendForgotPassChangeEmail } from "../services/email/email.service";
-import { getOneByEmailService, getOneByHashService, getOneByUsernameService, updateOneService, updateOneByEmailService } from '../services/entity.service';
+import { createService, getOneByEmailService, getOneByHashService, getOneByUsernameService, updateOneService, updateOneByEmailService } from '../services/entity.service';
 const entity = 'User'
 
 export const register = async (req, res) => {
-    const user = req.body;
-    const { username, email, password } = user;
-    let message;
-    //validación
-    if (!username, !email, !password) {
-        message = 'Faltan datos en el formulario';
-        return res.status(404).json({ message });
-    }
-
     try {
+
+        const user = req.body;
+        const { username, email, password } = user;
+        let message;
+
+        //validación datos formulario
+        if (!username, !email, !password) {
+            message = 'Faltan datos en el formulario';
+            return res.status(404).json({ message });
+        }
+
         // si usuario existe
         const doesUserExist = await getOneByUsernameService(entity, username);
         if (doesUserExist) {
@@ -26,7 +27,6 @@ export const register = async (req, res) => {
 
         //Comprobación de email duplicado
         const doesEmailExist = await getOneByEmailService(entity, email);
-
         if (doesEmailExist) {
             message = 'El email ya existe, loguéate o solicita contraseña olvidada';
             return res.status(404).json({ message });
@@ -36,7 +36,7 @@ export const register = async (req, res) => {
         user.password = hashPassword(password);
         user.hash = generateHash();
         //luego crea el usuario
-        const newUser = await User.create(user);
+        const newUser = await createService(entity, user);
         if (newUser) {
             newUser.password = undefined;
             sendActivationEmail(user);
@@ -47,7 +47,6 @@ export const register = async (req, res) => {
         return res.status(404).json({ message: 'Usuario no creado :(' });
 
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ error })
     }
 }
@@ -71,7 +70,7 @@ export const login = async (req, res) => {
         }
 
         // comprobar validez password
-        const match = isPasswordValid(password, userObj.password);
+        const match = await isPasswordValid(password, userObj.password);
         if (!match) {
             message = 'Password incorrecto!!';
             return res.status(404).json({ message });
@@ -109,7 +108,7 @@ export const activateAccount = async (req, res) => {
         // busca el hash si existe extrae el id de usuario
         const hashExists = await getOneByHashService(entity, hash);
         if (!hashExists) {
-            message = 'Hash no encontrado, contacta con el administrador';
+            message = 'Activación de usuario no encontrada, contacta con el administrador';
             return res.status(404).json({ message })
         }
         const { id } = hashExists;
@@ -126,7 +125,6 @@ export const activateAccount = async (req, res) => {
         return res.status(404).json({ message: 'Usuario no activado :(' })
 
     } catch (error) {
-        console.log(error)
         return res.status(500).json({ error })
     }
 }
@@ -151,7 +149,8 @@ export const forgotPassChangeEmail = async (req, res) => {
         userExists.hash = generateHash(userExists.email);
 
         // Actualizao user con nuevo hash
-        const updatedCount = await updateOneByEmailService(userExists.dataValues, entity, email);
+        const updatedCount =
+            await updateOneByEmailService(userExists.dataValues, entity, email);
 
         // Si no pudo actualizar
         if (updatedCount && updatedCount[0] > 0) {
@@ -205,7 +204,8 @@ export const forgotPassChangeRequest = async (req, res) => {
         userExists.hash = null;
 
         // actualizo user
-        const updatedCount = await updateOneByEmailService(userExists.dataValues, entity, userExists.email)
+        const updatedCount =
+            await updateOneByEmailService(userExists.dataValues, entity, userExists.email)
 
         // // si correcto
         if (updatedCount && updatedCount.length > 0) {
@@ -218,7 +218,6 @@ export const forgotPassChangeRequest = async (req, res) => {
         return res.status(400).json({ message })
 
     } catch (error) { //si falla servidor
-        console.log(error);
         return res.status(500).json({ error })
     }
 }
