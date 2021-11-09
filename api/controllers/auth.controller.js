@@ -1,8 +1,9 @@
 import { hashPassword, isPasswordValid } from "../services/bcrypt.service";
 import { generateHash } from "../services/hash.service";
-import { encodeToken } from '../services/jwt.service';
+import { createAccessTokenService, createRefreshTokenService, decodeTokenService, hasTokenExpiredService } from '../services/jwt.service';
 import { sendActivationEmail, sendForgotPassChangeEmail } from "../services/email/email.service";
-import { createService, getOneByEmailService, getOneByHashService, getOneByUsernameService, updateOneService, updateOneByEmailService } from '../services/entity.service';
+import { createService, getOneByEmailService, getOneByHashService, getOneByUsernameService, updateOneService, updateOneByEmailService, getOneById } from '../services/entity.service';
+
 const entity = 'User'
 
 export const register = async (req, res) => {
@@ -63,21 +64,21 @@ export const login = async (req, res) => {
 
     try {
         //compruebo si existe en db
-        const userObj = await getOneByEmailService(entity, email);
-        if (!userObj) {
+        const userStored = await getOneByEmailService(entity, email);
+        if (!userStored) {
             message = 'El usuario no existe';
             return res.status(404).json({ message });
         }
 
         // comprobar validez password
-        const match = await isPasswordValid(password, userObj.password);
+        const match = await isPasswordValid(password, userStored.password);
         if (!match) {
             message = 'Password incorrecto!!';
             return res.status(404).json({ message });
         }
 
         // comprobar si usuario activado
-        if (!userObj.active) {
+        if (!userStored.active) {
             message = 'Usuario inactivo, contacta con el administrador!!';
             return res.status(404).json({ message });
         }
@@ -85,15 +86,16 @@ export const login = async (req, res) => {
         // si es correcto, compruebo si solicita el token y lo devuelvo
         if (getToken) {
             return res.status(200).json({
-                token: encodeToken(userObj)
+                accessToken: createAccessTokenService(userStored),
+                refreshToken: createRefreshTokenService(userStored)
             })
         }
 
         //Si coincide pero no pide token, devolvemos usuario sin password ni hash
-        userObj.password = undefined;
-        userObj.hash = undefined;
+        userStored.password = undefined;
+        userStored.hash = undefined;
         message = 'Password correcto';
-        return res.status(200).json({ userObj, message })
+        return res.status(200).json({ userStored, message })
 
     } catch (error) {
         return res.status(500).json({ error })
@@ -222,4 +224,43 @@ export const forgotPassChangeRequest = async (req, res) => {
     }
 }
 
+export const refreshAccessToken = async (req, res) => {
+    let message;
+    let refreshToken;
 
+    try {
+
+        // comprobar si tiene cabecera de autenticación
+        if (!req.body.refreshToken) {
+            message = 'La petición no tiene el refresh token de autenticación';
+            return res.status(401).send({ message });
+        } else { // limpio el refreshToken y quito el Bearer
+            refreshToken = req.body.refreshToken.replace("Bearer ", "").replace(/['"]+/g, "");
+        }
+        const hasTokenExpired = hasTokenExpiredService(refreshToken);
+        if (hasTokenExpired) {
+            message = 'El refresh token ha expirado, vuelve a loguearte';
+            return res.status(401).send({ message });
+        } else {
+            
+            const { sub } = decodeTokenService(refreshToken);
+            const userStored = await getOneById(entity, sub);
+
+            if (userStored && userStored.id === sub) {
+                return res.status(401).send({
+                    message: 'Estos son tus nuevos tokens',
+                    accessToken: createAccessTokenService(userStored),
+                    refreshToken
+                });
+
+            } else {
+                message = 'Usuario no encontrado';
+                return res.status(401).send({ message });
+            }
+        }
+    } catch (error) {
+        message = 'Error de servidor, prueba de nuevo';
+        return res.status(401).send({ message });
+    }
+
+}

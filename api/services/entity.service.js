@@ -16,6 +16,10 @@ export const getOneByHashService = async (entity, hash) => {
   return await Models[entity].findOne({ where: { hash } });
 }
 
+export const getOneById = async (entity, id) => {
+  return await Models[entity].findOne({ where: { id } });
+}
+
 export const getAllService = async (entity) => {
   return await Models[entity].findAll();
 }

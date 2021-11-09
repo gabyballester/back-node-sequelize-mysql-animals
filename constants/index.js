@@ -10,7 +10,9 @@ const {
   REJECTION_FALSE,
   SECRET_KEY,
   SALT_ROUNDS,
-  HTTP_PREFIX
+  HTTP_PREFIX,
+  ACCESS_TOKEN_EXP,
+  REFRESH_TOKEN_EXP
 } = process.env;
 
 export const GLOBAL = {
@@ -21,7 +23,10 @@ export const GLOBAL = {
     endpoint: {
       emailActivation: "/auth/activate/",
       frontPassChangeForm: "/auth/front-pass-change-form/",
+      auth: '/auth',
+      users: '/users'
     },
+    version: '/v1'
   },
   emailConfig: {
     service: EMAIL_SERVICE,
@@ -35,4 +40,6 @@ export const GLOBAL = {
   },
   secretKey: SECRET_KEY,
   saltRounds: SALT_ROUNDS,
+  accessTokenExp: ACCESS_TOKEN_EXP,
+  refreshTokenExp: REFRESH_TOKEN_EXP
 };

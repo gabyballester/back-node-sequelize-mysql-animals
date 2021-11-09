@@ -1,12 +1,10 @@
-'use strict';
-
 import fs from "fs";
 import path from 'path';
 import Sequelize from "sequelize";
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const dbConfig = require('../dbConfig')[env];
-const {dbName, userName, password} = dbConfig
+const { dbName, userName, password } = dbConfig
 const db = {};
 
 let sequelize;
@@ -14,11 +12,11 @@ if (dbConfig.use_env_variable) {
   sequelize = new Sequelize(process.env[dbConfig.use_env_variable], dbConfig);
 } else {
   sequelize = new Sequelize(
-    dbName, 
+    dbName,
     userName,
     password,
     dbConfig
-    );
+  );
 }
 
 fs

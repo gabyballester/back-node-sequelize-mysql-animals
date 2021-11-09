@@ -1,6 +1,4 @@
-import { decodeToken, hasTokenExpired } from '../api/services/jwt.service';
-import { GLOBAL } from "../constants";
-const { secretKey } = GLOBAL;
+import { decodeTokenService, hasTokenExpiredService } from '../api/services/jwt.service';
 
 export const isAuthMd = (req, res, next) => {
     let message;
@@ -17,10 +15,10 @@ export const isAuthMd = (req, res, next) => {
 
     try {
         // Decodifico el payload
-        payload = decodeToken(token, secretKey)
+        payload = decodeTokenService(token)
 
         // comprobar validez
-        if (hasTokenExpired(payload)) {
+        if (hasTokenExpiredService(payload)) {
             message = 'El token ha expirado';
             return res.status(401).send({ message });
         } else {    //Agregamos payload al objeto user
