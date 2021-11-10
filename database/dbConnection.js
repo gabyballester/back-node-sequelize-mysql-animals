@@ -1,9 +1,9 @@
 const { Sequelize } = require('sequelize');
 import { GLOBAL } from "../constants/index";
-const { dbName, userName, password, host, port, dialect, logging } = require('./dbConfig')[GLOBAL.environment];
+const { database, username, password, host, port, dialect, logging } = require('./dbConfig')[GLOBAL.environment];
 
 export const dbConnection = new Sequelize(
-  dbName, userName, password,
+  database, username, password,
   {
     host, port, dialect, logging, operatorsAliases: 0,
     pool:

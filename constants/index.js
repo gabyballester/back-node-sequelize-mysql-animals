@@ -24,7 +24,8 @@ export const GLOBAL = {
       emailActivation: "/auth/activate/",
       frontPassChangeForm: "/auth/front-pass-change-form/",
       auth: '/auth',
-      users: '/users'
+      users: '/users',
+      posts: '/posts'
     },
     version: '/v1'
   },

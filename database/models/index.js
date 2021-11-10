@@ -4,7 +4,7 @@ import Sequelize from "sequelize";
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const dbConfig = require('../dbConfig')[env];
-const { dbName, userName, password } = dbConfig
+const { database, username, password } = dbConfig
 const db = {};
 
 let sequelize;
@@ -12,8 +12,8 @@ if (dbConfig.use_env_variable) {
   sequelize = new Sequelize(process.env[dbConfig.use_env_variable], dbConfig);
 } else {
   sequelize = new Sequelize(
-    dbName,
-    userName,
+    database,
+    username,
     password,
     dbConfig
   );
