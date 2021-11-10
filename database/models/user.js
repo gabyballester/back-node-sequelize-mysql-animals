@@ -48,10 +48,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  // User.associate = (model) => {
-  //   User.hasMany(model.Like, { as: "usuario", foreignKey: "userId" });
-  //   User.hasMany(model.Post, { as: "post", foreignKey: "userId" });
-  // };
+  User.associate = (model) => {
+    User.hasMany(model.Like, { foreignKey: "userId" });
+    User.hasMany(model.Post, { foreignKey: "userId" });
+  };
 
   return User;
 };

@@ -25,7 +25,8 @@ export const GLOBAL = {
       frontPassChangeForm: "/auth/front-pass-change-form/",
       auth: '/auth',
       users: '/users',
-      posts: '/posts'
+      posts: '/posts',
+      likes: '/likes'
     },
     version: '/v1'
   },

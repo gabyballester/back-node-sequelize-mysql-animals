@@ -41,5 +41,7 @@ export const deleteOneService = async (entity, id) => {
 }
 
 export const deleteAllService = async (entity) => {
-  return await Models[entity].destroy({where: {},truncate: true});
+  return await Models[entity].destroy({where: {},
+    // truncate: true
+  });
 }

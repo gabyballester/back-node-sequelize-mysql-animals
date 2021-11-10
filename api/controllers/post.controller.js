@@ -7,7 +7,6 @@ import {
   deleteAllService,
 } from "../services/entity.service";
 const entity = "Post";
-import Models from '../../database/models';
 
 export async function createPost(req, res) {
   const userId = req.user.sub;
@@ -21,8 +20,7 @@ export async function createPost(req, res) {
 
     //crea post
     const postToCreate = { userId, text };
-    console.log(Models.Post.create(postToCreate));
-    const newPost = await Models.Post.create(postToCreate);
+    const newPost = await createService(entity, postToCreate);
     // const newPost = await createService(entity, postToCreate);
     console.log('entra');
     if (newPost)
@@ -125,10 +123,10 @@ export const deleteAllPosts = async (req, res) => {
     }
 
     // si hay, los borra
-    const remainingCount = await deleteAllService(entity);
+    const deletedCount = await deleteAllService(entity);
 
     // si los ha borrado
-    if (remainingCount === 0)
+    if (deletedCount > 0)
       return res
         .status(200)
         .json({ message: "Todos los posts han sido borrados!!" });

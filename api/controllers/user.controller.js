@@ -108,10 +108,10 @@ export const deleteAllUsers = async (req, res) => {
     }
 
     // si hay, los borra
-    const remainingCount = await deleteAllService(entity);
+    const deletedCount = await deleteAllService(entity);
 
     // si los ha borrado
-    if (remainingCount === 0)
+    if (deletedCount > 0)
       return res.status(200)
         .json({ message: "Todos los usuarios han sido borrados!!" });
 
