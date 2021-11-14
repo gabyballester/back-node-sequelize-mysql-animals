@@ -3,8 +3,7 @@ import { GLOBAL } from "./constants";
 const { api } = GLOBAL;
 import { dbConnection } from "./database/dbConnection";
 
-
-dbConnection.sync({ force: false })
+dbConnection.sync({ force: true })
   .then(() => {
     console.log('Conectado a MySQL, a través de Sequelize');
     app.listen(api.serverPort, () => {

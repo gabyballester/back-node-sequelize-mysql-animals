@@ -10,44 +10,39 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('likes', {
+    await queryInterface.createTable('animalstatuses', {
       id: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
+        primaryKey: true
       },
-      userId: {
+      name: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        unique: true,
+        type: Sequelize.STRING
+      },
+      creatorId: {
+        type: Sequelize.UUID,
+        allowNull: false,
         references: {
-          model: "users",
+          model: "Users",
           key: "id"
         },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE"
-      },
-      postId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "posts",
-          key: "id"
-        },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE"
+        onDelete: "RESTRICT",
+        onUpdate: "RESTRICT"
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATE
       }
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('likes');
+    await queryInterface.dropTable('animalstatuses');
   }
 };

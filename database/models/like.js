@@ -1,24 +1,31 @@
 'use strict';
-// const {
-//   Model
-// } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
 
   const Like = sequelize.define('Like', {
     id: {
       allowNull: false,
-      autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: DataTypes.UUID
     },
     userId: {
       allowNull: false,
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      references: {
+        model: "Users",
+        key: "id"
+      },
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE"
     },
     postId: {
       allowNull: false,
-      type: DataTypes.INTEGER,
-
+      type: DataTypes.UUID,
+      references: {
+        model: "Posts",
+        key: "id"
+      },
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE"
     },
     createdAt: {
       allowNull: false,
@@ -31,8 +38,16 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Like.associate = (model) => {
-    Like.belongsTo(model.User, { foreignKey: "userId" });
-    Like.belongsTo(model.Post, { foreignKey: "postId" });
+    Like.belongsTo(model.User, {
+      foreignKey: "id",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE"
+    });
+    Like.belongsTo(model.Post, {
+      foreignKey: "id",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE"
+    });
   }
 
   return Like;

@@ -5,9 +5,8 @@ module.exports = (sequelize, DataTypes) => {
   const Post = sequelize.define('Post', {
     id: {
       allowNull: false,
-      autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: DataTypes.UUID
     },
     userId: {
       allowNull: false,
@@ -28,8 +27,12 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Post.associate = (model) => {
-    Post.belongsTo(model.User, { foreignKey: "userId" })
-    Post.hasMany(model.Like, { foreignKey: "postId" })
+    Post.belongsTo(model.User, { foreignKey: "id" });
+    Post.hasMany(model.Like, {
+      foreignKey: 'userId',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
   }
 
   return Post;
