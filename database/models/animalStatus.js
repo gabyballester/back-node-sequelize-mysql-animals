@@ -21,12 +21,12 @@ module.exports = (sequelize, DataTypes) => {
     creatorId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: {
-        model: "Users",
-        key: "id"
-      },
-      onDelete: "RESTRICT",
-      onUpdate: "RESTRICT"
+      //   references: {
+      //     model: "Users",
+      //     key: "id"
+      //   },
+      //   onDelete: "RESTRICT",
+      //   onUpdate: "RESTRICT"
     },
     createdAt: {
       allowNull: false,
@@ -39,12 +39,8 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   AnimalStatus.associate = (model) => {
-    AnimalStatus.belongsTo(model.Animal, {
-      foreignKey: 'statusId',
-      onDelete: "RESTRICT",
-      onUpdate: "RESTRICT"
-    })
-  };
+    AnimalStatus.hasMany(model.Animal);
+  }
 
   return AnimalStatus;
 };

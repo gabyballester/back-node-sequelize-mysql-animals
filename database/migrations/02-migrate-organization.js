@@ -10,27 +10,17 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('animalstatuses', {
+    await queryInterface.createTable('organizations', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
       },
       name: {
-        allowNull: false,
         unique: true,
-        type: Sequelize.STRING
-      },
-      creatorId: {
-        type: Sequelize.UUID,
         allowNull: false,
-        references: {
-          model: "Users",
-          key: "id"
-        },
-        onDelete: "RESTRICT",
-        onUpdate: "RESTRICT"
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -43,6 +33,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('animalstatuses');
+    await queryInterface.dropTable('organizations');
   }
 };

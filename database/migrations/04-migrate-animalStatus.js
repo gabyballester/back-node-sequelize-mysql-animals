@@ -10,46 +10,17 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('animalstatuses', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
         primaryKey: true
       },
-      username: {
+      name: {
         allowNull: false,
         unique: true,
         type: Sequelize.STRING
-      },
-      email: {
-        allowNull: false,
-        unique: true,
-        type: Sequelize.STRING
-      },
-      password: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      roleId: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        // references: {
-        //   model: 'Roles',
-        //   key: 'id'
-        // },
-        // onDelete: "RESTRICT",
-        // onUpdate: "RESTRICT"
-      },
-      organizationId: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        // references: {
-        //   model: "Organizations",
-        //   key: "id"
-        // },
-        // onDelete: "RESTRICT",
-        // onUpdate: "RESTRICT"
       },
       creatorId: {
         type: Sequelize.UUID,
@@ -58,17 +29,8 @@ module.exports = {
         //   model: "Users",
         //   key: "id"
         // },
-        // onDelete: "RESTRICT",
-        // onUpdate: "RESTRICT"
-      },
-      active: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
-      },
-      hash: {
-        type: Sequelize.STRING,
-        allowNull: true,
+        // onUpdate: "CASCADE",
+        // onDelete: "NO ACTION"
       },
       createdAt: {
         allowNull: false,
@@ -81,6 +43,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('animalstatuses');
   }
 };

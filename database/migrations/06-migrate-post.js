@@ -10,7 +10,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('likes', {
+    await queryInterface.createTable('posts', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -20,34 +20,28 @@ module.exports = {
       userId: {
         allowNull: false,
         type: Sequelize.UUID,
-        references: {
-          model: "Users",
-          key: "id"
-        },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE"
+        // references: {
+        //   model: "Users",
+        //   key: "id"
+        // },
+        // onDelete: "CASCADE",
+        // onUpdate: "CASCADE"
       },
-      postId: {
+      text: {
         allowNull: false,
-        type: Sequelize.UUID,
-        references: {
-          model: "Posts",
-          key: "id"
-        },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE"
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATE
       }
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('likes');
+    await queryInterface.dropTable('posts');
   }
 };

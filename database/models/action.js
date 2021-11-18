@@ -2,17 +2,16 @@
 
 module.exports = (sequelize, DataTypes) => {
 
-  const Organization = sequelize.define('Organization', {
+  const Action = sequelize.define('Action', {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      primaryKey: true,
+      primaryKey: true
     },
     name: {
-      unique: true,
-      allowNull: false,
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false
     },
     createdAt: {
       allowNull: false,
@@ -24,10 +23,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  Organization.associate = (model) => {
-    Organization.hasMany(model.User);
-    Organization.hasMany(model.Animal)
-  };
 
-  return Organization;
+  Action.associate = (model) => {
+
+    Action.belongsToMany(model.Animal, {
+      through: "animalAction",
+      foreignKey: "actionId",
+    });
+
+  }
+
+
+
+  return Action;
 };

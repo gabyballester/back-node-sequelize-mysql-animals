@@ -9,11 +9,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
     },
-    code: {
-      unique: true,
-      allowNull: false,
-      type: DataTypes.STRING
-    },
     name: {
       allowNull: false,
       unique: true,
@@ -30,11 +25,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Role.associate = (model) => {
-    Role.belongsTo(model.User, {
-      foreignKey: "roleId",
-      onDelete: "RESTRICT",
-      onUpdate: "RESTRICT"
-    });
+    Role.hasMany(model.User);
   };
 
   return Role;

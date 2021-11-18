@@ -22,39 +22,39 @@ module.exports = {
         unique: true,
         type: Sequelize.STRING
       },
-      nombre: {
+      name: {
         allowNull: false,
         type: Sequelize.STRING
       },
       organizationId: {
         type: Sequelize.UUID,
         allowNull: false,
-        references: {
-          model: "Organizations",
-          key: "id"
-        },
-        onDelete: "RESTRICT",
-        onUpdate: "RESTRICT"
+        // references: {
+        //   model: "organizations",
+        //   key: "id"
+        // },
+        // onDelete: "RESTRICT",
+        // onUpdate: "RESTRICT"
       },
       creatorId: {
         type: Sequelize.UUID,
         allowNull: false,
-        references: {
-          model: "Users",
-          key: "id"
-        },
-        onDelete: "RESTRICT",
-        onUpdate: "RESTRICT"
+        // references: {
+        //   model: "Users",
+        //   key: "id"
+        // },
+        // onDelete: "RESTRICT",
+        // onUpdate: "RESTRICT"
       },
       updaterId: {
         type: Sequelize.UUID,
         allowNull: false,
-        references: {
-          model: "Users",
-          key: "id"
-        },
-        onDelete: "RESTRICT",
-        onUpdate: "RESTRICT"
+        // references: {
+        //   model: "Users",
+        //   key: "id"
+        // },
+        // onDelete: "RESTRICT",
+        // onUpdate: "RESTRICT"
       },
       type: {
         type: Sequelize.STRING,
@@ -84,7 +84,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
       },
-      ageStatus: {
+      healthStatus: {
         type: Sequelize.STRING,
         allowNull: true
       },
@@ -99,12 +99,12 @@ module.exports = {
       statusId: {
         type: Sequelize.UUID,
         allowNull: false,
-        references: {
-          model: "animalstatuses",
-          key: "id"
-        },
-        onDelete: "RESTRICT",
-        onUpdate: "RESTRICT"
+        // references: {
+        //   model: "animalstatuses",
+        //   key: "id"
+        // },
+        // onDelete: "RESTRICT",
+        // onUpdate: "RESTRICT"
       },
       comments: {
         type: Sequelize.STRING,

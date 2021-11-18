@@ -10,22 +10,22 @@ module.exports = (sequelize, DataTypes) => {
     userId: {
       allowNull: false,
       type: DataTypes.UUID,
-      references: {
-        model: "Users",
-        key: "id"
-      },
-      onDelete: "CASCADE",
-      onUpdate: "CASCADE"
+      // references: {
+      //   model: "Users",
+      //   key: "id"
+      // },
+      // onDelete: "CASCADE",
+      // onUpdate: "CASCADE"
     },
     postId: {
       allowNull: false,
       type: DataTypes.UUID,
-      references: {
-        model: "Posts",
-        key: "id"
-      },
-      onDelete: "CASCADE",
-      onUpdate: "CASCADE"
+      // references: {
+      //   model: "Posts",
+      //   key: "id"
+      // },
+      // onDelete: "CASCADE",
+      // onUpdate: "CASCADE"
     },
     createdAt: {
       allowNull: false,
@@ -38,16 +38,19 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Like.associate = (model) => {
+
     Like.belongsTo(model.User, {
       foreignKey: "id",
-      onDelete: "CASCADE",
-      onUpdate: "CASCADE"
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE"
     });
-    Like.belongsTo(model.Post, {
-      foreignKey: "id",
-      onDelete: "CASCADE",
-      onUpdate: "CASCADE"
-    });
+    
+    // Like.belongsTo(model.Post, {
+    //   foreignKey: "id",
+    //   onUpdate: "CASCADE",
+    //   onDelete: "CASCADE"
+    // });
+  
   }
 
   return Like;

@@ -15,39 +15,39 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       type: DataTypes.STRING
     },
-    nombre: {
+    name: {
       allowNull: false,
       type: DataTypes.STRING
     },
     organizationId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: {
-        model: "Organizations",
-        key: "id"
-      },
-      onDelete: "RESTRICT",
-      onUpdate: "RESTRICT"
+      // references: {
+      //   model: "organizations",
+      //   key: "id"
+      // },
+      // onDelete: "RESTRICT",
+      // onUpdate: "RESTRICT"
     },
     creatorId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: {
-        model: "Users",
-        key: "id"
-      },
-      onDelete: "RESTRICT",
-      onUpdate: "RESTRICT"
+      // references: {
+      //   model: "Users",
+      //   key: "id"
+      // },
+      // onDelete: "RESTRICT",
+      // onUpdate: "RESTRICT"
     },
     updaterId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: {
-        model: "Users",
-        key: "id"
-      },
-      onDelete: "RESTRICT",
-      onUpdate: "RESTRICT"
+      // references: {
+      //   model: "Users",
+      //   key: "id"
+      // },
+      // onDelete: "RESTRICT",
+      // onUpdate: "RESTRICT"
     },
     type: {
       type: DataTypes.STRING,
@@ -86,7 +86,7 @@ module.exports = (sequelize, DataTypes) => {
         values: ['year', 'month']
       })
     },
-    ageStatus: {
+    healthStatus: {
       type: DataTypes.STRING,
       allowNull: true
     },
@@ -101,12 +101,12 @@ module.exports = (sequelize, DataTypes) => {
     statusId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: {
-        model: "animalstatuses",
-        key: "id"
-      },
-      onDelete: "RESTRICT",
-      onUpdate: "RESTRICT"
+      // references: {
+      //   model: "animalstatuses",
+      //   key: "id"
+      // },
+      // onDelete: "RESTRICT",
+      // onUpdate: "RESTRICT"
     },
     comments: {
       type: DataTypes.STRING,
@@ -123,22 +123,29 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Animal.associate = (model) => {
-    Animal.hasOne(model.AnimalStatus, {
+
+    Animal.belongsTo(model.AnimalStatus, {
       foreignKey: 'statusId',
-      onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'NO ACTION',
+      onDelete: 'NO ACTION'
     });
 
     Animal.belongsTo(model.Organization, {
       foreignKey: 'organizationId',
-      onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'NO ACTION',
+      onDelete: 'NO ACTION'
     })
     Animal.belongsTo(model.User, {
-      foreignKey: 'id',
-      onUpdate: 'RESTRICT',
-      onDelete: 'RESTRICT'
+      foreignKey: 'creatorId',
+      onUpdate: 'NO ACTION',
+      onDelete: 'NO ACTION'
     })
+
+    Animal.belongsToMany(model.Action, {
+      through: "animalAction",
+      foreignKey: "animalId",
+    });
+
   };
 
   return Animal;

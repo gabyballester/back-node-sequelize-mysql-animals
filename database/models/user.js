@@ -1,5 +1,4 @@
 'use strict';
-import { uuid } from "../../api/services/uuid.service";
 
 module.exports = (sequelize, DataTypes) => {
 
@@ -27,33 +26,32 @@ module.exports = (sequelize, DataTypes) => {
     roleId: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: '00',
-      references: {
-        model: "Roles",
-        key: "id"
-      },
-      onDelete: "RESTRICT",
-      onUpdate: "RESTRICT"
+      // references: {
+      //   model: "Roles",
+      //   key: "id"
+      // },
+      // onDelete: "RESTRICT",
+      // onUpdate: "RESTRICT"
     },
     organizationId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: {
-        model: "Organizations",
-        key: "id"
-      },
-      onDelete: "RESTRICT",
-      onUpdate: "RESTRICT"
+      // references: {
+      //   model: "Organizations",
+      //   key: "id"
+      // },
+      // onDelete: "RESTRICT",
+      // onUpdate: "RESTRICT"
     },
     creatorId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: {
-        model: "Users",
-        key: "id"
-      },
-      onDelete: "RESTRICT",
-      onUpdate: "RESTRICT"
+      // references: {
+      //   model: "Users",
+      //   key: "id"
+      // },
+      // onDelete: "RESTRICT",
+      // onUpdate: "RESTRICT"
     },
     active: {
       type: DataTypes.BOOLEAN,
@@ -75,31 +73,24 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.associate = (model) => {
-    User.hasMany(model.Like, {
-      foreignKey: 'userId',
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
-    });
-    User.hasMany(model.Post, {
-      foreignKey: 'postId',
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
-    });
-    User.hasOne(model.Organization, {
+    User.hasMany(model.Like);
+    User.belongsTo(model.Organization, {
       foreignKey: 'organizationId',
       onDelete: 'RESTRICT',
       onUpdate: 'RESTRICT'
     });
-    User.hasOne(model.Role, {
+    User.belongsTo(model.Role, {
       foreignKey: 'roleId',
-      onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT'
+      onUpdate: 'NOT ACTION',
+      onDelete: 'NOT ACTION',
     });
-    User.hasOne(model.Animal, {
-      foreignKey: 'creatorId',
-      onUpdate: 'RETRICT',
-      onDelete: 'RETRICT'
-    })
+    User.hasMany(model.Animal);
+    User.belongsToMany(model.Post, {
+      through: 'like',
+      foreignKey: "id",
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
   };
 
   return User;
